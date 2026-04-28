@@ -12,7 +12,6 @@ This system is designed to streamline daily retail operations, from inventory ma
 * **MySQL** – Relational database
 * **Prisma ORM** – Database ORM for efficient data handling
 * **React.js** – Frontend library with Zustand for state management
-* **Vue 3** – Alternative frontend using Composition API + Pinia
 * **JWT Authentication** – Secure token-based authentication
 * **REST API** – Communication between frontend and backend
 
