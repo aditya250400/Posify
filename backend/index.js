@@ -3,6 +3,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
+const router = require("./routes");
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -17,4 +18,6 @@ app.get("/uploads/:filename", (req, res) => {
   res.sendFile(path.join(__dirname, "uploads", req.params.filename));
 });
 
+// routes
+app.use("/api", router);
 app.listen(port, () => console.log(`Server jalan lancar jaya di port ${port}`));
