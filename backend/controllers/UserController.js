@@ -137,8 +137,65 @@ const findUserById = async (req, res) => {
     });
   }
 };
+
+const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    let newUserData = {
+      name: req.body.name,
+      email: req.body.email,
+      updated_at: new Date(),
+    };
+
+    if (req.body.password !== "") {
+      if (req.body.password != req.body.confirmPassword) {
+        return res.status(422).json({
+          meta: {
+            success: false,
+            message: "Password and Confirmation Password is different!",
+          },
+        });
+      }
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+      newUserData.password = hashedPassword;
+    }
+
+    const user = await prisma.user.update({
+      where: { id: Number(id) },
+      data: newUserData,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        created_at: true,
+        updated_at: true,
+      },
+    });
+
+    res.status(200).send({
+      meta: {
+        success: true,
+        message: "User successfully updated",
+      },
+      data: user,
+    });
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).send({
+      meta: {
+        success: false,
+        message: "Internal Server Error",
+      },
+      errors: e,
+    });
+  }
+};
+
 module.exports = {
   findUsers,
   createUser,
   findUserById,
+  updateUser,
 };
