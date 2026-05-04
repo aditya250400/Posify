@@ -71,18 +71,23 @@ const routes = [
     ],
     handler: categoryController.create,
   },
-  //   {
-  //     method: "get",
-  //     path: "/categories/:id",
-  //     middlewares: [verifyToken],
-  //     handler: categoryController.show,
-  //   },
-  //   {
-  //     method: "put",
-  //     path: "/categories/:id",
-  //     middlewares: [verifyToken, validateCategory, handleValidationErrors],
-  //     handler: categoryController.update,
-  //   },
+  {
+    method: "get",
+    path: "/categories/:id",
+    middlewares: [verifyToken],
+    handler: categoryController.show,
+  },
+  {
+    method: "put",
+    path: "/categories/:id",
+    middlewares: [
+      verifyToken,
+      upload.single("image"),
+      validateCategory,
+      handleValidationErrors,
+    ],
+    handler: categoryController.update,
+  },
   //   {
   //     method: "delete",
   //     path: "/categories/:id",

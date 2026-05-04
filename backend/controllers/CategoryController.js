@@ -1,6 +1,8 @@
 const express = require("express");
 const prisma = require("../prisma/client");
 const bcrypt = require("bcryptjs");
+const { validationResult } = require("express-validator");
+const fs = require("fs");
 
 const index = async (req, res) => {
   try {
@@ -95,4 +97,111 @@ const create = async (req, res) => {
   }
 };
 
-module.exports = { index, create };
+const show = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const category = await prisma.category.findUnique({
+      where: {
+        id: Number(id),
+      },
+      select: {
+        id: true,
+        name: true,
+        image: true,
+        description: true,
+        created_at: true,
+        updated_at: true,
+      },
+    });
+
+    if (!category) {
+      return res.status(404).send({
+        meta: {
+          success: false,
+          message: `Category with id ${id} not found`,
+        },
+      });
+    }
+
+    res.status(200).send({
+      meta: {
+        success: true,
+        message: `Category ${category.name} with id ${id} successfully retrieved `,
+      },
+      data: category,
+    });
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).send({
+      meta: {
+        success: false,
+        message: "Internal Server Error",
+      },
+      errors: e,
+    });
+  }
+};
+
+const update = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const category = await prisma.category.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    if (!category) {
+      res.status(404).send({
+        meta: {
+          success: false,
+          message: `Category with id ${id} not found`,
+        },
+      });
+    }
+
+    const newDataCategory = {
+      name: req.body.name,
+      description: req.body.description,
+      updated_at: new Date(),
+    };
+
+    if (req.file) {
+      newDataCategory.image = `uploads/${req.file.filename}`;
+
+      if (category.image) {
+        fs.unlinkSync(category.image);
+      }
+    }
+
+    await prisma.category.update({
+      where: {
+        id: Number(id),
+      },
+      data: newDataCategory,
+    });
+
+    res.status(200).send({
+      meta: {
+        success: true,
+        message: "Category sucessfully updated",
+      },
+      data: category,
+    });
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).send({
+      meta: {
+        success: false,
+        message: "Internal Server Error",
+      },
+      errors: e,
+    });
+  }
+};
+
+module.exports = { index, create, show, update };
