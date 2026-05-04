@@ -20,4 +20,21 @@ app.get("/uploads/:filename", (req, res) => {
 
 // routes
 app.use("/api", router);
+
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+  res.status(404).json({
+    success: false,
+    message: `Route ${req.originalUrl} not found`,
+  });
+});
+
+// global error handler
+app.use((err, req, res, next) => {
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+  });
+});
+
 app.listen(port, () => console.log(`Server jalan lancar jaya di port ${port}`));
