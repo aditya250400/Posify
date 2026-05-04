@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { validateLogin } = require("../utils/validators");
-const { handleValidationErrors } = require("../middlewares");
+const { handleValidationErrors, verifyToken } = require("../middlewares");
 const loginController = require("../controllers/LoginController");
+const userController = require("../controllers/UserController");
 
 const routes = [
   {
@@ -10,6 +11,12 @@ const routes = [
     path: "/login",
     middlewares: [validateLogin, handleValidationErrors],
     handler: loginController.login,
+  },
+  {
+    method: "get",
+    path: "/users",
+    middlewares: [verifyToken],
+    handler: userController.findUsers,
   },
 ];
 
