@@ -22,7 +22,11 @@ const findUsers = async (req, res) => {
     });
 
     const totalUsers = await prisma.user.count({
-      where: { name: { contains: "search" } },
+      where: {
+        name: {
+          contains: search,
+        },
+      },
     });
 
     const totalPages = Math.ceil(totalUsers / limit);
@@ -35,8 +39,8 @@ const findUsers = async (req, res) => {
       data: users,
       pagination: {
         currentPage: page,
-        totalPages,
-        totalUsers,
+        totalPages: totalPages,
+        totalUsers: totalUsers,
       },
     });
   } catch (e) {
@@ -193,9 +197,52 @@ const updateUser = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await prisma.user.findUnique({
+      where: { id: Number(id) },
+    });
+
+    if (!user) {
+      return res.status(404).send({
+        meta: {
+          success: false,
+          message: `User with id ${id} not found`,
+        },
+      });
+    }
+
+    await prisma.user.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    res.status(200).send({
+      meta: {
+        success: true,
+        message: `User by name ${user.name} successfully deleted`,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).send({
+      meta: {
+        success: false,
+        message: "Internal Server Error",
+      },
+      errors: e,
+    });
+  }
+};
+
 module.exports = {
   findUsers,
   createUser,
   findUserById,
   updateUser,
+  deleteUser,
 };
