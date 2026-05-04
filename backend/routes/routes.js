@@ -94,6 +94,12 @@ const routes = [
     middlewares: [verifyToken],
     handler: categoryController.destroy,
   },
+  {
+    method: "get",
+    path: "/categories-all",
+    middlewares: [verifyToken],
+    handler: categoryController.allCategories,
+  },
 ];
 
 module.exports = routes;

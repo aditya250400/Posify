@@ -257,4 +257,30 @@ const destroy = async (req, res) => {
   }
 };
 
-module.exports = { index, create, show, update, destroy };
+const allCategories = async (req, res) => {
+  try {
+    const categories = await prisma.category.findMany({
+      orderBy: {
+        id: "desc",
+      },
+    });
+    res.status(200).send({
+      meta: {
+        success: true,
+        message: "List Categories",
+      },
+      data: categories,
+    });
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).send({
+      meta: {
+        success: false,
+        message: "Internal Server Error",
+      },
+      errors: e,
+    });
+  }
+};
+module.exports = { index, create, show, update, destroy, allCategories };
