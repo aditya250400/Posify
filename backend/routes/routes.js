@@ -17,32 +17,34 @@ const routes = [
     method: "get",
     path: "/users",
     middlewares: [verifyToken],
-    handler: userController.findUsers,
+    handler: userController.index,
   },
   {
     method: "post",
     path: "/users",
     middlewares: [verifyToken, validateUser, handleValidationErrors],
-    handler: userController.createUser,
+    handler: userController.create,
   },
   {
     method: "get",
     path: "/users/:id",
     middlewares: [verifyToken],
-    handler: userController.findUserById,
+    handler: userController.show,
   },
   {
     method: "put",
     path: "/users/:id",
     middlewares: [verifyToken, validateUser, handleValidationErrors],
-    handler: userController.updateUser,
+    handler: userController.update,
   },
   {
     method: "delete",
     path: "/users/:id",
     middlewares: [verifyToken],
-    handler: userController.deleteUser,
+    handler: userController.destroy,
   },
+
+  //   categories
 ];
 
 module.exports = routes;

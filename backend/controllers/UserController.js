@@ -2,7 +2,7 @@ const express = require("express");
 const prisma = require("../prisma/client");
 const bcrypt = require("bcryptjs");
 
-const findUsers = async (req, res) => {
+const index = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 5;
@@ -56,7 +56,7 @@ const findUsers = async (req, res) => {
   }
 };
 
-const createUser = async (req, res) => {
+const create = async (req, res) => {
   try {
     const { name, email, password, confirmPassword } = req.body;
 
@@ -100,7 +100,7 @@ const createUser = async (req, res) => {
   }
 };
 
-const findUserById = async (req, res) => {
+const show = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -142,7 +142,7 @@ const findUserById = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
+const update = async (req, res) => {
   try {
     const { id } = req.params;
     let newUserData = {
@@ -197,7 +197,7 @@ const updateUser = async (req, res) => {
   }
 };
 
-const deleteUser = async (req, res) => {
+const destroy = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -240,9 +240,9 @@ const deleteUser = async (req, res) => {
 };
 
 module.exports = {
-  findUsers,
-  createUser,
-  findUserById,
-  updateUser,
-  deleteUser,
+  index,
+  create,
+  show,
+  update,
+  destroy,
 };
