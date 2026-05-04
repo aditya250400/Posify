@@ -1,5 +1,6 @@
 const express = require("express");
 const prisma = require("../prisma/client");
+const bcrypt = require("bcryptjs");
 
 const findUsers = async (req, res) => {
   try {
@@ -50,7 +51,50 @@ const findUsers = async (req, res) => {
     });
   }
 };
+const createUser = async (req, res) => {
+  try {
+    const { name, email, password, confirmPassword } = req.body;
 
+    if (password != confirmPassword) {
+      return res.status(422).json({
+        meta: {
+          success: false,
+          message: "Password and Confirmation Password is different!",
+        },
+      });
+    }
+
+    const user = await prisma.user.create({
+      data: { name, email, password: await bcrypt.hash(password, 10) },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        created_at: true,
+        updated_at: true,
+      },
+    });
+
+    res.status(201).send({
+      meta: {
+        success: true,
+        message: "User successfully created!",
+      },
+      data: user,
+    });
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).send({
+      meta: {
+        success: false,
+        message: "Internal Server Error",
+      },
+      errors: e,
+    });
+  }
+};
 module.exports = {
   findUsers,
+  createUser,
 };
