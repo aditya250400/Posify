@@ -1,7 +1,12 @@
-const { validateLogin, validateUser } = require("../utils/validators");
+const {
+  validateLogin,
+  validateUser,
+  validateCategory,
+} = require("../utils/validators");
 const { handleValidationErrors, verifyToken } = require("../middlewares");
 const loginController = require("../controllers/LoginController");
 const userController = require("../controllers/UserController");
+const categoryController = require("../controllers/CategoryController");
 
 const routes = [
   // auth
@@ -45,6 +50,36 @@ const routes = [
   },
 
   //   categories
+  {
+    method: "get",
+    path: "/categories",
+    middlewares: [verifyToken],
+    handler: categoryController.index,
+  },
+  //   {
+  //     method: "post",
+  //     path: "/categories",
+  //     middlewares: [verifyToken, validateCategory, handleValidationErrors],
+  //     handler: categoryController.create,
+  //   },
+  //   {
+  //     method: "get",
+  //     path: "/categories/:id",
+  //     middlewares: [verifyToken],
+  //     handler: categoryController.show,
+  //   },
+  //   {
+  //     method: "put",
+  //     path: "/categories/:id",
+  //     middlewares: [verifyToken, validateCategory, handleValidationErrors],
+  //     handler: categoryController.update,
+  //   },
+  //   {
+  //     method: "delete",
+  //     path: "/categories/:id",
+  //     middlewares: [verifyToken],
+  //     handler: categoryController.destroy,
+  //   },
 ];
 
 module.exports = routes;

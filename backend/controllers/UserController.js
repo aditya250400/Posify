@@ -19,6 +19,8 @@ const index = async (req, res) => {
         email: true,
       },
       orderBy: { id: "desc" },
+      skip: skip,
+      take: limit,
     });
 
     const totalUsers = await prisma.user.count({
