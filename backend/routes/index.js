@@ -26,6 +26,12 @@ const routes = [
     middlewares: [verifyToken, validateUser, handleValidationErrors],
     handler: userController.createUser,
   },
+  {
+    method: "get",
+    path: "/users/:id",
+    middlewares: [verifyToken],
+    handler: userController.findUserById,
+  },
 ];
 
 const createRouters = (routes) => {

@@ -51,6 +51,7 @@ const findUsers = async (req, res) => {
     });
   }
 };
+
 const createUser = async (req, res) => {
   try {
     const { name, email, password, confirmPassword } = req.body;
@@ -94,7 +95,50 @@ const createUser = async (req, res) => {
     });
   }
 };
+
+const findUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await prisma.user.findUnique({
+      where: { id: Number(id) },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).send({
+        meta: {
+          success: false,
+          message: `User with id ${id} not found`,
+        },
+      });
+    }
+
+    res.status(200).send({
+      meta: {
+        success: true,
+        message: `List data user: ${user.name} with id ${user.id}`,
+      },
+      data: user,
+    });
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).send({
+      meta: {
+        success: false,
+        message: "Internal Server Error",
+      },
+      errors: e,
+    });
+  }
+};
 module.exports = {
   findUsers,
   createUser,
+  findUserById,
 };
