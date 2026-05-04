@@ -61,4 +61,38 @@ const index = async (req, res) => {
   }
 };
 
-module.exports = { index };
+const create = async (req, res) => {
+  try {
+    const { name, description } = req.body;
+
+    const category = await prisma.category.create({
+      data: {
+        name,
+        description,
+        image: `uploads/${req.file.filename}`,
+      },
+    });
+
+    res.status(201).send({
+      meta: {
+        success: true,
+        message: "Category successfully created",
+      },
+      data: category,
+    });
+
+    console.log(req.file.path);
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).send({
+      meta: {
+        success: false,
+        message: "Internal Server Error",
+      },
+      errors: e,
+    });
+  }
+};
+
+module.exports = { index, create };

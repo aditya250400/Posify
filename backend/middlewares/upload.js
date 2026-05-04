@@ -24,7 +24,7 @@ const fileFilter = (req, file, cb) => {
   } else {
     cb(
       new Error(
-        "Ekstensi gambar tidak valid. Silakan upload gambar dengan ekstensi .jpg, .jpeg, .png, .gif, .webp, .svg",
+        "Image extension is not valid. Please upload image with extension .jpg, .jpeg, .png, .gif, .webp, .svg",
       ),
       false,
     );

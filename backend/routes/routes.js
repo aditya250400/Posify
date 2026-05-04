@@ -3,7 +3,11 @@ const {
   validateUser,
   validateCategory,
 } = require("../utils/validators");
-const { handleValidationErrors, verifyToken } = require("../middlewares");
+const {
+  handleValidationErrors,
+  verifyToken,
+  upload,
+} = require("../middlewares");
 const loginController = require("../controllers/LoginController");
 const userController = require("../controllers/UserController");
 const categoryController = require("../controllers/CategoryController");
@@ -49,19 +53,24 @@ const routes = [
     handler: userController.destroy,
   },
 
-  //   categories
+  //   categories Routes
   {
     method: "get",
     path: "/categories",
     middlewares: [verifyToken],
     handler: categoryController.index,
   },
-  //   {
-  //     method: "post",
-  //     path: "/categories",
-  //     middlewares: [verifyToken, validateCategory, handleValidationErrors],
-  //     handler: categoryController.create,
-  //   },
+  {
+    method: "post",
+    path: "/categories",
+    middlewares: [
+      verifyToken,
+      upload.single("image"),
+      validateCategory,
+      handleValidationErrors,
+    ],
+    handler: categoryController.create,
+  },
   //   {
   //     method: "get",
   //     path: "/categories/:id",
