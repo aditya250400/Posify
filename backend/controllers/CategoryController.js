@@ -177,7 +177,7 @@ const update = async (req, res) => {
       }
     }
 
-    await prisma.category.update({
+    const updateCategory = await prisma.category.update({
       where: {
         id: Number(id),
       },
@@ -189,7 +189,7 @@ const update = async (req, res) => {
         success: true,
         message: "Category sucessfully updated",
       },
-      data: category,
+      data: updateCategory,
     });
   } catch (e) {
     console.log(e);
@@ -204,4 +204,57 @@ const update = async (req, res) => {
   }
 };
 
-module.exports = { index, create, show, update };
+const destroy = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const category = await prisma.category.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    if (!category) {
+      res.status(404).send({
+        meta: {
+          success: false,
+          message: `Category with id ${id} not found`,
+        },
+      });
+    }
+
+    await prisma.category.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    if (category.image) {
+      const imagePath = category.image;
+      const fileName = imagePath.substring(imagePath.lastIndexOf("/") + 1);
+      const filePath = `uploads/${fileName}`;
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    }
+
+    res.status(200).send({
+      meta: {
+        success: true,
+        message: `Category ${category.name} sucessfully deleted!`,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).send({
+      meta: {
+        success: false,
+        message: "Internal Server Error",
+      },
+      errors: e,
+    });
+  }
+};
+
+module.exports = { index, create, show, update, destroy };

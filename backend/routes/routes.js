@@ -88,12 +88,12 @@ const routes = [
     ],
     handler: categoryController.update,
   },
-  //   {
-  //     method: "delete",
-  //     path: "/categories/:id",
-  //     middlewares: [verifyToken],
-  //     handler: categoryController.destroy,
-  //   },
+  {
+    method: "delete",
+    path: "/categories/:id",
+    middlewares: [verifyToken],
+    handler: categoryController.destroy,
+  },
 ];
 
 module.exports = routes;
