@@ -182,18 +182,18 @@ const routes = [
     middlewares: [verifyToken, validateCustomer, handleValidationErrors],
     handler: customerController.update,
   },
-  //   {
-  //     method: "delete",
-  //     path: "/customers/:id",
-  //     middlewares: [verifyToken],
-  //     handler: customerController.destroy,
-  //   },
-  //   {
-  //     method: "get",
-  //     path: "/customers-all",
-  //     middlewares: [verifyToken],
-  //     handler: customerController.productByCategoryId,
-  //   },
+  {
+    method: "delete",
+    path: "/customers/:id",
+    middlewares: [verifyToken],
+    handler: customerController.destroy,
+  },
+  {
+    method: "get",
+    path: "/customers-all",
+    middlewares: [verifyToken],
+    handler: customerController.allCustomers,
+  },
 ];
 
 module.exports = routes;

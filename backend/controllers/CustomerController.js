@@ -192,9 +192,88 @@ const update = async (req, res) => {
   }
 };
 
+const destroy = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const customer = await prisma.customer.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    if (!customer) {
+      return res.status(404).send({
+        meta: {
+          success: false,
+          message: `Customer with id ${id} not found`,
+        },
+      });
+    }
+
+    await prisma.customer.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    res.status(200).send({
+      meta: {
+        success: true,
+        message: `Customer ${customer.name} sucessfully deleted!`,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).send({
+      meta: {
+        success: false,
+        message: "Internal Server Error",
+      },
+      errors: e,
+    });
+  }
+};
+
+const allCustomers = async (req, res) => {
+  try {
+    const customers = await prisma.customer.findMany({
+      orderBy: {
+        id: "desc",
+      },
+    });
+
+    const formattedCustomers = customers.map((customer) => ({
+      value: customer.id,
+      label: customer.name,
+    }));
+
+    res.status(200).send({
+      meta: {
+        success: true,
+        message: "List All customers",
+      },
+      data: formattedCustomers,
+    });
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).send({
+      meta: {
+        success: false,
+        message: "Internal Server Error",
+      },
+      errors: e,
+    });
+  }
+};
+
 module.exports = {
   index,
   create,
   show,
   update,
+  destroy,
+  allCustomers,
 };
