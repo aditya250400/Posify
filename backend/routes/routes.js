@@ -210,6 +210,12 @@ const routes = [
     middlewares: [verifyToken, validateCart, handleValidationErrors],
     handler: cartController.create,
   },
+  {
+    method: "delete",
+    path: "/carts/:id",
+    middlewares: [verifyToken],
+    handler: cartController.destroy,
+  },
 ];
 
 module.exports = routes;

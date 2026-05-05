@@ -155,4 +155,49 @@ const create = async (req, res) => {
   }
 };
 
-module.exports = { index, create };
+const destroy = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const cart = await prisma.cart.findUnique({
+      where: {
+        id: Number(id),
+        cashier_id: parseInt(req.userId),
+      },
+    });
+    if (!cart) {
+      return res.status(404).send({
+        meta: {
+          success: false,
+          message: `Cart with id: ${id} not found`,
+        },
+      });
+    }
+
+    await prisma.cart.delete({
+      where: {
+        id: Number(id),
+        cashier_id: parseInt(req.userId),
+      },
+    });
+
+    res.status(200).send({
+      meta: {
+        success: true,
+        message: `Cart with id: ${id} successfully deleted`,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).send({
+      meta: {
+        success: false,
+        message: "Internal Server Error",
+      },
+      errors: e,
+    });
+  }
+};
+
+module.exports = { index, create, destroy };
