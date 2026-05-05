@@ -177,4 +177,71 @@ const show = async (req, res) => {
     });
   }
 };
-module.exports = { index, create, show };
+
+const update = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const product = await prisma.product.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    if (!product) {
+      res.status(404).send({
+        meta: {
+          success: false,
+          message: `Product with id ${id} not found`,
+        },
+      });
+    }
+
+    const newDataProduct = {
+      barcode: req.body.barcode,
+      title: req.body.title,
+      description: req.body.description,
+      buy_price: parseInt(req.body.buy_price),
+      sell_price: parseInt(req.body.sell_price),
+      stock: parseInt(req.body.stock),
+      category_id: parseInt(req.body.category_id),
+      updated_at: new Date(),
+    };
+
+    if (req.file) {
+      newDataProduct.image = `uploads/${req.file.filename}`;
+
+      if (product.image) {
+        fs.unlinkSync(product.image);
+      }
+    }
+
+    const updateProduct = await prisma.product.update({
+      where: {
+        id: Number(id),
+      },
+      data: newDataProduct,
+      include: { category: true },
+    });
+
+    res.status(200).send({
+      meta: {
+        success: true,
+        message: "Product sucessfully updated",
+      },
+      data: updateProduct,
+    });
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).send({
+      meta: {
+        success: false,
+        message: "Internal Server Error",
+      },
+      errors: e,
+    });
+  }
+};
+
+module.exports = { index, create, show, update };

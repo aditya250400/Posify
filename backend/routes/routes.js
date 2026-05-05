@@ -126,17 +126,17 @@ const routes = [
     middlewares: [verifyToken],
     handler: productController.show,
   },
-  //   {
-  //     method: "put",
-  //     path: "/products/:id",
-  //     middlewares: [
-  //       verifyToken,
-  //       upload.single("image"),
-  //       validateCategory,
-  //       handleValidationErrors,
-  //     ],
-  //     handler: productController.update,
-  //   },
+  {
+    method: "put",
+    path: "/products/:id",
+    middlewares: [
+      verifyToken,
+      upload.single("image"),
+      validateProduct,
+      handleValidationErrors,
+    ],
+    handler: productController.update,
+  },
   //   {
   //     method: "delete",
   //     path: "/products/:id",
