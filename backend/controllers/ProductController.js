@@ -117,4 +117,64 @@ const create = async (req, res) => {
   }
 };
 
-module.exports = { index, create };
+const show = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const product = await prisma.product.findUnique({
+      where: {
+        id: Number(id),
+      },
+      select: {
+        id: true,
+        barcode: true,
+        title: true,
+        description: true,
+        buy_price: true,
+        sell_price: true,
+        stock: true,
+        image: true,
+        category_id: true,
+        created_at: true,
+        updated_at: true,
+        category: {
+          select: {
+            name: true,
+            description: true,
+            image: true,
+            created_at: true,
+            updated_at: true,
+          },
+        },
+      },
+    });
+
+    if (!product) {
+      return res.status(404).send({
+        meta: {
+          success: false,
+          message: `Product with id ${id} not found`,
+        },
+      });
+    }
+
+    res.status(200).send({
+      meta: {
+        success: true,
+        message: `Product ${product.title} with id ${id} successfully retrieved `,
+      },
+      data: product,
+    });
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).send({
+      meta: {
+        success: false,
+        message: "Internal Server Error",
+      },
+      errors: e,
+    });
+  }
+};
+module.exports = { index, create, show };

@@ -120,12 +120,12 @@ const routes = [
     ],
     handler: productController.create,
   },
-  //   {
-  //     method: "get",
-  //     path: "/products/:id",
-  //     middlewares: [verifyToken],
-  //     handler: productController.show,
-  //   },
+  {
+    method: "get",
+    path: "/products/:id",
+    middlewares: [verifyToken],
+    handler: productController.show,
+  },
   //   {
   //     method: "put",
   //     path: "/products/:id",
