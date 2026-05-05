@@ -152,7 +152,7 @@ const update = async (req, res) => {
     });
 
     if (!category) {
-      res.status(404).send({
+      return res.status(404).send({
         meta: {
           success: false,
           message: `Category with id ${id} not found`,
@@ -212,7 +212,7 @@ const destroy = async (req, res) => {
     });
 
     if (!category) {
-      res.status(404).send({
+      return res.status(404).send({
         meta: {
           success: false,
           message: `Category with id ${id} not found`,

@@ -3,6 +3,7 @@ const {
   validateUser,
   validateCategory,
   validateProduct,
+  validateCustomer,
 } = require("../utils/validators");
 const {
   handleValidationErrors,
@@ -13,6 +14,7 @@ const loginController = require("../controllers/LoginController");
 const userController = require("../controllers/UserController");
 const categoryController = require("../controllers/CategoryController");
 const productController = require("../controllers/ProductController");
+const customerController = require("../controllers/CustomerController");
 
 const routes = [
   // auth
@@ -155,6 +157,43 @@ const routes = [
     middlewares: [verifyToken],
     handler: productController.productByBarcode,
   },
+  //   customer Routes
+  {
+    method: "get",
+    path: "/customers",
+    middlewares: [verifyToken],
+    handler: customerController.index,
+  },
+  {
+    method: "post",
+    path: "/customers",
+    middlewares: [verifyToken, validateCustomer, handleValidationErrors],
+    handler: customerController.create,
+  },
+  {
+    method: "get",
+    path: "/customers/:id",
+    middlewares: [verifyToken],
+    handler: customerController.show,
+  },
+  {
+    method: "put",
+    path: "/customers/:id",
+    middlewares: [verifyToken, validateCustomer, handleValidationErrors],
+    handler: customerController.update,
+  },
+  //   {
+  //     method: "delete",
+  //     path: "/customers/:id",
+  //     middlewares: [verifyToken],
+  //     handler: customerController.destroy,
+  //   },
+  //   {
+  //     method: "get",
+  //     path: "/customers-all",
+  //     middlewares: [verifyToken],
+  //     handler: customerController.productByCategoryId,
+  //   },
 ];
 
 module.exports = routes;

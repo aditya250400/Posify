@@ -189,7 +189,7 @@ const update = async (req, res) => {
     });
 
     if (!product) {
-      res.status(404).send({
+      return res.status(404).send({
         meta: {
           success: false,
           message: `Product with id ${id} not found`,
@@ -255,7 +255,7 @@ const destroy = async (req, res) => {
     });
 
     if (!product) {
-      res.status(404).send({
+      return res.status(404).send({
         meta: {
           success: false,
           message: `Product with id ${id} not found`,
