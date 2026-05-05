@@ -1,6 +1,5 @@
 const express = require("express");
 const prisma = require("../prisma/client");
-const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
 const fs = require("fs");
 
@@ -82,8 +81,6 @@ const create = async (req, res) => {
       },
       data: category,
     });
-
-    console.log(req.file.path);
   } catch (e) {
     console.log(e);
 
