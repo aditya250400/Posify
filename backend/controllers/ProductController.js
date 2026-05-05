@@ -244,4 +244,225 @@ const update = async (req, res) => {
   }
 };
 
-module.exports = { index, create, show, update };
+const destroy = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const product = await prisma.product.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    if (!product) {
+      res.status(404).send({
+        meta: {
+          success: false,
+          message: `Product with id ${id} not found`,
+        },
+      });
+    }
+
+    await prisma.product.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    if (product.image) {
+      const imagePath = product.image;
+      const fileName = imagePath.substring(imagePath.lastIndexOf("/") + 1);
+      const filePath = `uploads/${fileName}`;
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    }
+
+    res.status(200).send({
+      meta: {
+        success: true,
+        message: `Product ${product.title} sucessfully deleted!`,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).send({
+      meta: {
+        success: false,
+        message: "Internal Server Error",
+      },
+      errors: e,
+    });
+  }
+};
+
+const productByCategoryId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const skip = (page - 1) * limit;
+    const search = req.query.search || "";
+
+    const products = await prisma.product.findMany({
+      where: {
+        category_id: Number(id),
+      },
+      select: {
+        id: true,
+        barcode: true,
+        title: true,
+        image: true,
+        description: true,
+        buy_price: true,
+        sell_price: true,
+        stock: true,
+        created_at: true,
+        updated_at: true,
+        category: {
+          select: {
+            name: true,
+            description: true,
+            image: true,
+            created_at: true,
+            updated_at: true,
+          },
+        },
+      },
+      orderBy: { id: "desc" },
+      skip: skip,
+      take: limit,
+    });
+
+    if (products.length == 0) {
+      return res.status(404).send({
+        meta: {
+          success: false,
+          message: `Product with category id ${id} not found`,
+        },
+      });
+    }
+
+    const totalProducts = await prisma.product.count({
+      where: {
+        category_id: Number(id),
+      },
+    });
+
+    const totalPages = Math.ceil(totalProducts / limit);
+
+    res.status(200).send({
+      meta: {
+        success: true,
+        message: "List products data by category id",
+      },
+      data: products,
+      pagination: {
+        currentPage: page,
+        totalPages: totalPages,
+        totalProducts: totalProducts,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).send({
+      meta: {
+        success: false,
+        message: "Internal Server Error",
+      },
+      errors: e,
+    });
+  }
+};
+
+const productByBarcode = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const skip = (page - 1) * limit;
+    const search = req.query.search || "";
+
+    const products = await prisma.product.findMany({
+      where: {
+        barcode: req.body.barcode,
+      },
+      select: {
+        id: true,
+        barcode: true,
+        title: true,
+        image: true,
+        description: true,
+        buy_price: true,
+        sell_price: true,
+        stock: true,
+        created_at: true,
+        updated_at: true,
+        category: {
+          select: {
+            name: true,
+            description: true,
+            image: true,
+            created_at: true,
+            updated_at: true,
+          },
+        },
+      },
+      orderBy: { id: "desc" },
+      skip: skip,
+      take: limit,
+    });
+
+    if (products.length == 0) {
+      return res.status(404).send({
+        meta: {
+          success: false,
+          message: `Product with barcode ${req.body.barcode} not found`,
+        },
+      });
+    }
+
+    const totalProducts = await prisma.product.count({
+      where: {
+        barcode: req.body.barcode,
+      },
+    });
+
+    const totalPages = Math.ceil(totalProducts / limit);
+
+    res.status(200).send({
+      meta: {
+        success: true,
+        message: "List products data by barcode",
+      },
+      data: products,
+      pagination: {
+        currentPage: page,
+        totalPages: totalPages,
+        totalProducts: totalProducts,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).send({
+      meta: {
+        success: false,
+        message: "Internal Server Error",
+      },
+      errors: e,
+    });
+  }
+};
+
+module.exports = {
+  index,
+  create,
+  show,
+  update,
+  destroy,
+  productByCategoryId,
+  productByBarcode,
+};

@@ -137,18 +137,24 @@ const routes = [
     ],
     handler: productController.update,
   },
-  //   {
-  //     method: "delete",
-  //     path: "/products/:id",
-  //     middlewares: [verifyToken],
-  //     handler: productController.destroy,
-  //   },
-  //   {
-  //     method: "get",
-  //     path: "/products-all",
-  //     middlewares: [verifyToken],
-  //     handler: productController.allproducts,
-  //   },
+  {
+    method: "delete",
+    path: "/products/:id",
+    middlewares: [verifyToken],
+    handler: productController.destroy,
+  },
+  {
+    method: "get",
+    path: "/products-by-category/:id",
+    middlewares: [verifyToken],
+    handler: productController.productByCategoryId,
+  },
+  {
+    method: "post",
+    path: "/products-by-barcode",
+    middlewares: [verifyToken],
+    handler: productController.productByBarcode,
+  },
 ];
 
 module.exports = routes;
