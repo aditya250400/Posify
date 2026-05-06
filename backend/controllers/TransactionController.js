@@ -8,14 +8,14 @@ const create = async (req, res) => {
     const cashierId = parseInt(req.userId);
     const customerId = parseInt(req.body.customer_id) || null;
     const cash = parseInt(req.body.cash);
-    const change = parseInt(req.body.change);
+    // const change = parseInt(req.body.change);
     const discount = parseInt(req.body.discount);
     const grandTotal = parseInt(req.body.grand_total);
 
     if (
       isNaN(customerId) ||
       isNaN(cash) ||
-      isNaN(change) ||
+      //   isNaN(change) ||
       isNaN(discount) ||
       isNaN(grandTotal)
     ) {
@@ -27,13 +27,22 @@ const create = async (req, res) => {
       });
     }
 
+    if (cash <= grandTotal) {
+      return res.status(400).send({
+        meta: {
+          success: false,
+          message: "Cash less than grand total",
+        },
+      });
+    }
+
     const transaction = await prisma.transaction.create({
       data: {
         cashier_id: cashierId,
         customer_id: customerId,
         invoice,
         cash,
-        change,
+        change: cash - grandTotal,
         discount,
         grand_total: grandTotal,
       },
@@ -101,4 +110,79 @@ const create = async (req, res) => {
   }
 };
 
-module.exports = { create };
+const findTransactionByInvoice = async (req, res) => {
+  try {
+    const { invoice } = req.query;
+
+    const transaction = await prisma.transaction.findFirst({
+      where: {
+        invoice,
+      },
+      select: {
+        id: true,
+        cashier_id: true,
+        customer_id: true,
+        invoice: true,
+        cash: true,
+        change: true,
+        discount: true,
+        grand_total: true,
+        created_at: true,
+        customer: {
+          select: {
+            name: true,
+          },
+        },
+        cashier: {
+          select: {
+            name: true,
+            created_at: true,
+            updated_at: true,
+          },
+        },
+        transaction_details: {
+          select: {
+            id: true,
+            product_id: true,
+            qty: true,
+            price: true,
+            product: {
+              select: {
+                title: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!transaction) {
+      return res.status(404).send({
+        meta: {
+          success: false,
+          message: `Transaction with invoice: ${invoice} not found`,
+        },
+      });
+    }
+
+    res.status(200).send({
+      meta: {
+        success: true,
+        message: `Transaction with invoice: ${invoice} successfully retrieved`,
+      },
+      data: transaction,
+    });
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).send({
+      meta: {
+        success: false,
+        message: "Internal Server Error",
+      },
+      errors: e,
+    });
+  }
+};
+
+module.exports = { create, findTransactionByInvoice };

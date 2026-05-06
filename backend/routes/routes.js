@@ -225,6 +225,12 @@ const routes = [
     middlewares: [verifyToken, validateTransaction, handleValidationErrors],
     handler: transactionController.create,
   },
+  {
+    method: "get",
+    path: "/transactions",
+    middlewares: [verifyToken],
+    handler: transactionController.findTransactionByInvoice,
+  },
 ];
 
 module.exports = routes;
