@@ -5,6 +5,7 @@ const {
   validateProduct,
   validateCustomer,
   validateCart,
+  validateTransaction,
 } = require("../utils/validators");
 const {
   handleValidationErrors,
@@ -17,6 +18,7 @@ const categoryController = require("../controllers/CategoryController");
 const productController = require("../controllers/ProductController");
 const customerController = require("../controllers/CustomerController");
 const cartController = require("../controllers/CartController");
+const transactionController = require("../controllers/TransactionController");
 
 const routes = [
   // auth
@@ -215,6 +217,13 @@ const routes = [
     path: "/carts/:id",
     middlewares: [verifyToken],
     handler: cartController.destroy,
+  },
+  //transaction routes
+  {
+    method: "post",
+    path: "/transactions",
+    middlewares: [verifyToken, validateTransaction, handleValidationErrors],
+    handler: transactionController.create,
   },
 ];
 
