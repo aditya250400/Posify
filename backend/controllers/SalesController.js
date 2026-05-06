@@ -138,7 +138,7 @@ const exportSales = async (req, res) => {
         invoice: sale.invoice,
         cashier: sale.cashier.name,
         customer: sale.customer?.name || "Umum",
-        grand_total: `Rp ${moneyFormat(sale.grand_total)}`,
+        grand_total: `${moneyFormat(sale.grand_total)}`,
       });
     });
 
@@ -148,7 +148,7 @@ const exportSales = async (req, res) => {
       invoice: "",
       cashier: "",
       customer: "TOTAL",
-      grand_total: `Rp ${moneyFormat(total._sum.grand_total)}`,
+      grand_total: `${moneyFormat(total._sum.grand_total)}`,
     });
 
     // Style total row
