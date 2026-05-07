@@ -24,3 +24,5 @@ Api.interceptors.response.use(
     }
   },
 );
+
+export default Api;

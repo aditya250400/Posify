@@ -1,7 +1,7 @@
-import "./App.css";
 import { Toaster } from "react-hot-toast";
 import { useStore } from "./states/theme";
 import { useEffect } from "react";
+import AppRoutes from "./routes";
 
 function App() {
   const { theme } = useStore();
@@ -12,6 +12,7 @@ function App() {
   return (
     <>
       <Toaster />
+      <AppRoutes />
     </>
   );
 }
