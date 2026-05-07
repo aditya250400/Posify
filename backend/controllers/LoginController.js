@@ -18,9 +18,9 @@ const login = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(404).json({
+      return res.status(402).json({
         success: false,
-        message: "User not found",
+        message: "Invalid Credential",
       });
     }
 
@@ -30,7 +30,7 @@ const login = async (req, res) => {
     );
 
     if (!validPassword) {
-      return res.status(401).json({
+      return res.status(402).json({
         success: false,
         message: "Invalid Credential",
       });
