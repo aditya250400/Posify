@@ -37,7 +37,7 @@ const getDashboardData = async (req, res) => {
         sumSalesWeek += total;
       });
     } else {
-      sales_date("");
+      sales_date.push("");
       sales_total.push(0);
     }
 

@@ -6,7 +6,7 @@ export const useStore = create((set) => ({
   user: Cookies.get("user") ? JSON.parse(Cookies.get("user")) : {},
   token: Cookies.get("token") || "",
   login: async (credentials) => {
-    const response = await Api.post("/api/login", credentials);
+    const response = await Api.post("/login", credentials);
 
     set({ user: response.data.data.user });
     set({ token: response.data.data.token });

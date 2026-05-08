@@ -17,7 +17,7 @@ export default function Header() {
 
   return (
     <div className="sticky-top">
-      <header className="navbar navbar-expand-md d-print-none sticky-top">
+      <header className="navbar navbar-expand-lg d-print-none sticky-top">
         <div className="container-xl">
           <button
             className="navbar-toggler"
@@ -31,27 +31,27 @@ export default function Header() {
             <span className="navbar-toggler-icon"></span>
           </button>
           <h1 className="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3 mt-1">
-            <Link to={"/"}>
+            <Link to="/">
               <img
                 src="/images/logo.png"
-                width="100"
-                height="32"
+                width={100}
+                height={32}
                 alt="Tabler"
                 className="navbar-brand-image mb-2"
               />
               <label className="ms-2">Posify</label>
             </Link>
           </h1>
+
           <div className="navbar-nav flex-row order-md-last">
-            <div className="d-none d-md-flex me-2">
+            <div className="d-flex me-2">
               {theme === "dark" ? (
-                // If the theme is dark, render the link to switch to light mode and hide the dark mode toggle
                 <button
-                  onClick={changeTheme}
                   className="nav-link px-0"
                   title="Enable light mode"
                   data-bs-toggle="tooltip"
                   data-bs-placement="bottom"
+                  onClick={changeTheme}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -71,29 +71,14 @@ export default function Header() {
                   </svg>
                 </button>
               ) : (
-                // If the theme is light, render the link to switch to dark mode and hide the light mode toggle
                 <button
-                  onClick={changeTheme}
                   className="nav-link px-0"
                   title="Enable dark mode"
                   data-bs-toggle="tooltip"
                   data-bs-placement="bottom"
+                  onClick={changeTheme}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="icon"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    strokeWidth="2"
-                    stroke="currentColor"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
-                  </svg>
+                  <img src="/icons/dark.svg" />
                 </button>
               )}
             </div>
@@ -108,30 +93,27 @@ export default function Header() {
                   className="avatar avatar-sm"
                   style={{ backgroundImage: "url(/images/boy.png)" }}
                 ></span>
-                <div className="d-none d-xl-block ps-2">
-                  <div>{user?.name}</div>
-                  <div className="mt-1 small text-muted">{user?.email}</div>
+                <div className="d-none d-lg-block ps-2">
+                  <div>{user.name}</div>
+                  <div className="mt-1 small text-muted">{user.email}</div>
                 </div>
               </a>
               <div className="dropdown-menu dropdown-menu-end dropdown-menu-arrow rounded mt-3">
-                <Link to={`/users/${user?.id}`} className="dropdown-item">
+                <Link className="dropdown-item" to={`/users/${user?.id}`}>
                   Profile
                 </Link>
-                <div className="dropdown-divider"></div>
-                <button
-                  type="button"
-                  onClick={logoutHandler}
-                  className="dropdown-item"
-                >
+                <div className="dropdown-divider" />
+                <a href="" onClick={logoutHandler} className="dropdown-item">
                   Logout
-                </button>
+                </a>
               </div>
             </div>
           </div>
         </div>
       </header>
 
-      <header className="navbar-expand-md">
+      {/* header navbar */}
+      <header className="navbar-expand-lg">
         <div className="collapse navbar-collapse" id="navbar-menu">
           <div className="navbar bg-muted-lt">
             <div className="container-xl">
@@ -139,8 +121,8 @@ export default function Header() {
                 <li
                   className={`nav-item ${location.pathname === "/dashboard" ? "active" : ""}`}
                 >
-                  <Link className="nav-link" to="/dashboard">
-                    <span className="nav-link-icon d-md-none d-lg-inline-block">
+                  <Link to="/dashboard" className="nav-link">
+                    <span className="nav-link-icon  d-lg-inline-block">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="icon"
@@ -166,14 +148,15 @@ export default function Header() {
                   className={`nav-item dropdown ${location.pathname === "/categories" || location.pathname === "/products" ? "active" : ""}`}
                 >
                   <a
-                    className="nav-link dropdown-toggle"
                     href="#"
+                    to="/dashboard"
+                    className="nav-link dropdown-toggle"
                     data-bs-toggle="dropdown"
                     data-bs-auto-close="outside"
                     role="button"
                     aria-expanded="false"
                   >
-                    <span className="nav-link-icon d-md-none d-lg-inline-block">
+                    <span className="nav-link-icon  d-lg-inline-block">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
@@ -207,8 +190,8 @@ export default function Header() {
                 <li
                   className={`nav-item ${location.pathname === "/customers" ? "active" : ""}`}
                 >
-                  <Link className="nav-link" to="/customers">
-                    <span className="nav-link-icon d-md-none d-lg-inline-block">
+                  <Link to="/customers" className="nav-link">
+                    <span className="nav-link-icon  d-lg-inline-block">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
@@ -231,12 +214,11 @@ export default function Header() {
                     <span className="nav-link-title">CUSTOMERS</span>
                   </Link>
                 </li>
-
                 <li
                   className={`nav-item ${location.pathname === "/transactions" ? "active" : ""}`}
                 >
-                  <Link className="nav-link" to="/transactions">
-                    <span className="nav-link-icon d-md-none d-lg-inline-block">
+                  <Link to="/transactions" className="nav-link">
+                    <span className="nav-link-icon  d-lg-inline-block">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
@@ -270,7 +252,7 @@ export default function Header() {
                     role="button"
                     aria-expanded="false"
                   >
-                    <span className="nav-link-icon d-md-none d-lg-inline-block">
+                    <span className="nav-link-icon  d-lg-inline-block">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
@@ -307,7 +289,7 @@ export default function Header() {
                   className={`nav-item ${location.pathname === "/users" ? "active" : ""}`}
                 >
                   <Link className="nav-link" to="/users">
-                    <span className="nav-link-icon d-md-none d-lg-inline-block">
+                    <span className="nav-link-icon  d-lg-inline-block">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"

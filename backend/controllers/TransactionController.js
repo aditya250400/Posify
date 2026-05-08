@@ -27,7 +27,7 @@ const create = async (req, res) => {
       });
     }
 
-    if (cash <= grandTotal) {
+    if (cash < grandTotal) {
       return res.status(400).send({
         meta: {
           success: false,

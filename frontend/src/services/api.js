@@ -7,12 +7,6 @@ const Api = axios.create({
 
 Api.interceptors.response.use(
   function (response) {
-    const token = Cookies.get("token");
-
-    if (token) {
-      response.headers.Authorization = JSON.parse(token);
-    }
-
     return response;
   },
   (error) => {
@@ -22,6 +16,20 @@ Api.interceptors.response.use(
     } else {
       return Promise.reject(error);
     }
+  },
+);
+
+Api.interceptors.request.use(
+  (config) => {
+    const token = Cookies.get("token");
+
+    if (token) {
+      config.headers.Authorization = token;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
   },
 );
 
