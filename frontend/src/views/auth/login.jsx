@@ -1,5 +1,5 @@
 import LayoutAuth from "../../layouts/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "../../states/user";
 import { useLoading } from "../../states/loading";
@@ -53,6 +53,10 @@ export default function Login() {
       setLoginFailed("");
     }
   };
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
   return (
     <LayoutAuth>
       <div className="text-center mb-4 mt-5">

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
 export const useLoading = create((set) => ({
-  loading: false,
+  loading: true,
   setLoading: (value) => set({ loading: value }),
 }));
