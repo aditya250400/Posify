@@ -25,6 +25,9 @@ export default function Dashboard() {
   //state productsBestSelling
   const [productsBestSelling, setProductsBestSelling] = useState([]);
 
+  // state product limit stock
+  const [productsLimitStock, setProductsLimitStock] = useState([]);
+
   // Fetch data
   const fetchData = async () => {
     setLoading(true);
@@ -46,6 +49,9 @@ export default function Dashboard() {
 
       //assign response data to state "productsBestSelling"
       setProductsBestSelling(response.data.data.best_selling_products);
+
+      //for state product limit stock
+      setProductsLimitStock(response.data.data.products_limit_stock);
     } catch (e) {
       alert("There was an error, check console");
       console.log(e);
@@ -178,6 +184,7 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
       <div className="page-body">
         <div className="container-xl">
           <div className="row row-deck row-cards">
@@ -249,7 +256,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="row mt-5">
-            <div className="col-md-8">
+            <div className="col-md-8 mb-5">
               <div className="card rounded">
                 <div className="card header p-3">
                   <h3 className="mb-0">PRODUCTS BEST SELLING</h3>
@@ -259,7 +266,41 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4"></div>
+            <div className="col-md-4">
+              <div className="card rounded">
+                <div className="'card-header p-3">
+                  <h3 className="mb-0">PRODUCTS LIMIT STOCK</h3>
+                </div>
+                <div className="card-body scrollable-card-body">
+                  <div className="row">
+                    {productsLimitStock.length > 0
+                      ? productsLimitStock.map((product) => (
+                          <div className="col-12 mb-2" key={product.id}>
+                            <div className="card rounded">
+                              <div className="card-body d-flex align-items-center">
+                                <img
+                                  src={`${import.meta.env.VITE_APP_IMAGEBASEURL}/${product.image}`}
+                                  alt={product.title}
+                                  width={50}
+                                  height={50}
+                                  className="me-3"
+                                />
+                                <div className="flex-fill">
+                                  <h4 className="mb-0">{product.title}</h4>
+                                  <hr className="mb-1 mt-1" />
+                                  <p className="text-danger mb-0">
+                                    Stock: {product.stock}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      : "Tidak ada data"}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
