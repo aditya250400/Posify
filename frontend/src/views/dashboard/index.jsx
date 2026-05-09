@@ -4,6 +4,7 @@ import Api from "../../services/api";
 import moneyFormat from "../../utils/moneyFormat";
 import ApexCharts from "apexcharts";
 import { useLoading } from "../../states/loading";
+import generateRandomColors from "../../utils/generateRandomColors";
 
 export default function Dashboard() {
   // loading states
@@ -20,6 +21,9 @@ export default function Dashboard() {
   const [sumProfitsWeek, setSumProfitsWeek] = useState(0);
   const [profitsDate, setProfitsDate] = useState([]);
   const [profitsTotal, setProfitsTotal] = useState([]);
+
+  //state productsBestSelling
+  const [productsBestSelling, setProductsBestSelling] = useState([]);
 
   // Fetch data
   const fetchData = async () => {
@@ -39,6 +43,9 @@ export default function Dashboard() {
       setSumProfitsWeek(response.data.data.sum_profits_week);
       setProfitsDate(response.data.data.profits.profits_date);
       setProfitsTotal(response.data.data.profits.profits_total);
+
+      //assign response data to state "productsBestSelling"
+      setProductsBestSelling(response.data.data.best_selling_products);
     } catch (e) {
       alert("There was an error, check console");
       console.log(e);
@@ -118,11 +125,46 @@ export default function Dashboard() {
       labels: profitsDate,
     });
 
+    const series = productsBestSelling.map((product) => product.total);
+    const labels = productsBestSelling.map((product) => product.title);
+
+    const bestProductsChart = initializeChart("chart-best-products", {
+      chart: {
+        type: "pie",
+        height: 350, // Adjust height as needed
+      },
+      series: series,
+      labels: labels,
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200,
+            },
+            legend: {
+              position: "bottom",
+            },
+          },
+        },
+      ],
+      colors: generateRandomColors(productsBestSelling.length), // Customize colors as needed
+      legend: {
+        position: "bottom",
+      },
+      tooltip: {
+        y: {
+          formatter: (val) => `${val}`,
+        },
+      },
+    });
+
     return () => {
       salesChart.destroy();
       profitsChart.destroy();
+      bestProductsChart.destroy();
     };
-  }, [salesDate, salesTotal, profitsDate, profitsTotal]);
+  }, [salesDate, salesTotal, profitsDate, profitsTotal, productsBestSelling]);
 
   return (
     <LayoutAdmin>
@@ -170,7 +212,7 @@ export default function Dashboard() {
                 <div className="card-body">
                   <div className="d-flex align-items-center">
                     <div className="subheader">SALES</div>
-                    <div className="ms-auto ">
+                    <div className="ms-auto lh-1">
                       <span className="text-end active" href="#">
                         Last 7 days
                       </span>
@@ -205,6 +247,19 @@ export default function Dashboard() {
                 <div id="chart-profits" className="chart-sm"></div>
               </div>
             </div>
+          </div>
+          <div className="row mt-5">
+            <div className="col-md-8">
+              <div className="card rounded">
+                <div className="card header p-3">
+                  <h3 className="mb-0">PRODUCTS BEST SELLING</h3>
+                </div>
+                <div className="card-body">
+                  <div id="chart-best-products"></div>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-4"></div>
           </div>
         </div>
       </div>

@@ -56,6 +56,10 @@ export default function Login() {
 
   useEffect(() => {
     setLoading(false);
+
+    return () => {
+      setLoading(true);
+    };
   }, []);
   return (
     <LayoutAuth>
