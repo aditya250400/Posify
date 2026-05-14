@@ -3,6 +3,10 @@ import LayoutAdmin from "../../layouts/admin";
 import Api from "../../services/api";
 import PaginationComponent from "../../components/Pagination";
 import moneyFormat from "../../utils/moneyFormat";
+import Barcode from "../../components/Barcode";
+import ProductCreate from "./create";
+import ProductEdit from "./edit";
+import DeleteButton from "../../components/DeleteButton";
 export default function ProductsIndex() {
   const [products, setProducts] = useState([]);
   const [pagination, setPagination] = useState({
@@ -63,6 +67,7 @@ export default function ProductsIndex() {
           <div className="row">
             <div className="col-12 mb-3">
               <div className="input-group">
+                <ProductCreate fetchData={fetchData} />
                 <input
                   type="text"
                   className="form-control"
@@ -98,7 +103,16 @@ export default function ProductsIndex() {
                       {products.length > 0 ? (
                         products.map((product, index) => (
                           <tr key={index}>
-                            <td data-label="Barcode">{product.barcode}</td>
+                            <td data-label="Barcode">
+                              <Barcode
+                                value={product.barcode}
+                                format={"CODE39"}
+                                lineColor={"#000"}
+                                width={1}
+                                height={20}
+                                fontSize={10}
+                              />
+                            </td>
                             <td data-label="Category Name">
                               <div className="d-flex py-1 align-items-center">
                                 <span
@@ -125,7 +139,17 @@ export default function ProductsIndex() {
                             </td>
                             <td data-label="Stock">{product.stock}</td>
                             <td>
-                              <div className="btn-list flex-nowrap"></div>
+                              <div className="btn-list flex-nowrap">
+                                <ProductEdit
+                                  productId={product.id}
+                                  fetchData={fetchData}
+                                />
+                                <DeleteButton
+                                  id={product.id}
+                                  endpoint="/products"
+                                  fetchData={fetchData}
+                                />
+                              </div>
                             </td>
                           </tr>
                         ))
