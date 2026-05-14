@@ -3,6 +3,7 @@ import { useStore } from "../states/user";
 import Login from "../views/auth/login";
 import Dashboard from "../views/dashboard";
 import CategoriesIndex from "../views/categories.jsx";
+import ProductsIndex from "../views/products/index.jsx";
 
 export default function AppRoutes() {
   const { token } = useStore();
@@ -20,6 +21,10 @@ export default function AppRoutes() {
       <Route
         path="/categories"
         element={token ? <CategoriesIndex /> : <Navigate to="/" replace />}
+      />
+      <Route
+        path="/products"
+        element={token ? <ProductsIndex /> : <Navigate to="/" replace />}
       />
     </Routes>
   );
