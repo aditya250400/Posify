@@ -4,6 +4,7 @@ import Api from "../../services/api";
 import PaginationComponent from "../../components/Pagination";
 import { useLoading } from "../../states/loading";
 import CategoryCreate from "./create";
+import CategoryEdit from "./edit";
 
 export default function CategoriesIndex() {
   const { loading, setLoading } = useLoading();
@@ -125,7 +126,12 @@ export default function CategoriesIndex() {
                               {category.description}
                             </td>
                             <td>
-                              <div className="btn-list flex-nowrap"></div>
+                              <div className="btn-list flex-nowrap">
+                                <CategoryEdit
+                                  categoryId={category.id}
+                                  fetchData={fetchData}
+                                />
+                              </div>
                             </td>
                           </tr>
                         ))
