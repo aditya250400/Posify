@@ -5,6 +5,7 @@ import Dashboard from "../views/dashboard";
 import CategoriesIndex from "../views/categories.jsx";
 import ProductsIndex from "../views/products/index.jsx";
 import CustomersIndex from "../views/customers/index.jsx";
+import UsersIndex from "../views/users/index.jsx";
 
 export default function AppRoutes() {
   const { token } = useStore();
@@ -30,6 +31,10 @@ export default function AppRoutes() {
       <Route
         path="/customers"
         element={token ? <CustomersIndex /> : <Navigate to="/" replace />}
+      />
+      <Route
+        path="/users"
+        element={token ? <UsersIndex /> : <Navigate to="/" replace />}
       />
     </Routes>
   );
