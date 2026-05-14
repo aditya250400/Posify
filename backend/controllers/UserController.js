@@ -43,6 +43,7 @@ const index = async (req, res) => {
         currentPage: page,
         totalPages: totalPages,
         totalUsers: totalUsers,
+        perPage: limit,
       },
     });
   } catch (e) {

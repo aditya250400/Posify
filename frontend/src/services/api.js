@@ -15,7 +15,6 @@ Api.interceptors.response.use(
       Cookies.remove("token");
       window.location = "/";
     } else {
-      alert("There was an error, check console");
       return Promise.reject(error);
     }
   },

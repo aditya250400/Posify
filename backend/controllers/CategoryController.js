@@ -46,6 +46,7 @@ const index = async (req, res) => {
       pagination: {
         currentPage: page,
         totalPages: totalPages,
+        perPage: limit,
         totalCategories: totalCategories,
       },
     });

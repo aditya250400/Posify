@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Api from "../../services/api";
 import PaginationComponent from "../../components/Pagination";
 import { useLoading } from "../../states/loading";
+import CategoryCreate from "./create";
 
 export default function CategoriesIndex() {
   const { loading, setLoading } = useLoading();
@@ -73,6 +74,7 @@ export default function CategoriesIndex() {
           <div className="row">
             <div className="col-12 mb-3">
               <div className="input-group">
+                <CategoryCreate fetchData={fetchData} />
                 <input
                   type="text"
                   className="form-control"

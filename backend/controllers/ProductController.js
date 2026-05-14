@@ -56,6 +56,7 @@ const index = async (req, res) => {
         currentPage: page,
         totalPages: totalPages,
         totalProducts: totalProducts,
+        perPage: limit,
       },
     });
   } catch (e) {
