@@ -179,10 +179,16 @@ export default function Header() {
                     <span className="nav-link-title">MASTER</span>
                   </a>
                   <div className="dropdown-menu">
-                    <Link className="dropdown-item" to="/categories">
+                    <Link
+                      className={`dropdown-item ${location.pathname === "/categories" ? "active" : ""} `}
+                      to="/categories"
+                    >
                       Categories
                     </Link>
-                    <Link className="dropdown-item" to="/products">
+                    <Link
+                      className={`dropdown-item ${location.pathname === "/products" ? "active" : ""} `}
+                      to="/products"
+                    >
                       Products
                     </Link>
                   </div>

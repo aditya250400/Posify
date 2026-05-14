@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import LayoutAuth from "../../layouts/auth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";

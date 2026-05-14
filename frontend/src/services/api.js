@@ -11,9 +11,11 @@ Api.interceptors.response.use(
   },
   (error) => {
     if (401 === error.response.status) {
+      alert("Session is expired, please login again");
       Cookies.remove("token");
       window.location = "/";
     } else {
+      alert("There was an error, check console");
       return Promise.reject(error);
     }
   },

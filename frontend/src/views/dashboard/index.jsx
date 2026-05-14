@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import LayoutAdmin from "../../layouts/admin";
 import { useState, useEffect } from "react";
 import Api from "../../services/api";
@@ -53,7 +55,6 @@ export default function Dashboard() {
       //for state product limit stock
       setProductsLimitStock(response.data.data.products_limit_stock);
     } catch (e) {
-      alert("There was an error, check console");
       console.log(e);
     } finally {
       setLoading(false);
@@ -268,7 +269,7 @@ export default function Dashboard() {
             </div>
             <div className="col-md-4">
               <div className="card rounded">
-                <div className="'card-header p-3">
+                <div className="card-header p-3">
                   <h3 className="mb-0">PRODUCTS LIMIT STOCK</h3>
                 </div>
                 <div className="card-body scrollable-card-body">
