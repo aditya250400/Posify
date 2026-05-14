@@ -5,6 +5,7 @@ import PaginationComponent from "../../components/Pagination";
 import { useLoading } from "../../states/loading";
 import CategoryCreate from "./create";
 import CategoryEdit from "./edit";
+import DeleteButton from "../../components/DeleteButton";
 
 export default function CategoriesIndex() {
   const { loading, setLoading } = useLoading();
@@ -129,6 +130,11 @@ export default function CategoriesIndex() {
                               <div className="btn-list flex-nowrap">
                                 <CategoryEdit
                                   categoryId={category.id}
+                                  fetchData={fetchData}
+                                />
+                                <DeleteButton
+                                  id={category.id}
+                                  endpoint="/categories"
                                   fetchData={fetchData}
                                 />
                               </div>

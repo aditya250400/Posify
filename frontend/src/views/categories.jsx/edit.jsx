@@ -90,15 +90,11 @@ export default function CategoryEdit({ fetchData, categoryId }) {
     }
   };
 
-  useEffect(() => {
-    fetchCategory();
-    console.log(categoryId);
-  }, [categoryId]);
-
   return (
     <>
       <a
         href="#"
+        onClick={() => fetchCategory()}
         className="btn rounded"
         data-bs-toggle="modal"
         data-bs-target={`#modal-edit-category-${categoryId}`}
