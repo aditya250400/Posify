@@ -5,6 +5,8 @@ import PaginationComponent from "../../components/Pagination";
 import { useLoading } from "../../states/loading";
 import ProductList from "../../components/ProductList";
 import CategoryList from "../../components/CategoryList";
+import OrderItemList from "../../components/OrderItemList";
+import moneyFormat from "../../utils/moneyFormat";
 
 export default function TransactionsIndex() {
   const { loading, setLoading } = useLoading();
@@ -12,6 +14,8 @@ export default function TransactionsIndex() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [, setCurrentCategoryId] = useState(null);
+  const [carts, setCarts] = useState([]);
+  const [totalCarts, setTotalCarts] = useState(0);
   const [pagination, setPagination] = useState({
     currentPage: 1,
     perPage: 0,
@@ -79,6 +83,16 @@ export default function TransactionsIndex() {
     }
   };
 
+  const fetchCarts = async () => {
+    try {
+      const response = await Api.get("/carts");
+      setCarts(response.data.data);
+      setTotalCarts(response.data.totalPrice);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const searchHandler = (e) => {
     e.preventDefault();
     setBarcode(e.target.value);
@@ -89,6 +103,7 @@ export default function TransactionsIndex() {
   useEffect(() => {
     fetchProducts();
     fetchCategories();
+    fetchCarts();
 
     if (searchInputRef.current) {
       searchInputRef.current.focus();
@@ -140,7 +155,7 @@ export default function TransactionsIndex() {
               />
 
               {/* Product List */}
-              <ProductList products={products} />
+              <ProductList products={products} fetchCarts={fetchCarts} />
 
               {/* Pagination */}
               <div className="row mt-3">
@@ -160,11 +175,12 @@ export default function TransactionsIndex() {
                 </div>
                 <div className="card-body scrollable-card-body p-0">
                   {/* Order Items */}
+                  <OrderItemList carts={carts} fetchCarts={fetchCarts} />
                 </div>
                 <div className="card-body">
                   <div className="mt-3">
-                    <h3 className="float-end"></h3>
-                    <h3 className="mb-0">Total</h3>
+                    <h3 className="float-end">{moneyFormat(totalCarts)}</h3>
+                    <h3 className="mb-0">Total ({carts.length} Items)</h3>
                   </div>
                   <hr />
                 </div>

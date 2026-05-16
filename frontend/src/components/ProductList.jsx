@@ -1,8 +1,32 @@
 /* eslint-disable react/prop-types */
+import Api from "../services/api";
 import moneyFormat from "../utils/moneyFormat";
 import Barcode from "./Barcode";
+import toast from "react-hot-toast";
 
-export default function ProductList({ products }) {
+export default function ProductList({ products, fetchCarts }) {
+  const addToCart = async (product) => {
+    try {
+      const response = await Api.post("/carts", {
+        product_id: product.id,
+        qty: 1,
+        price: product.sell_price,
+      });
+
+      toast.success(`${response.data.meta.message}`, {
+        duration: 4000,
+        position: "top-right",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+      fetchCarts();
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <>
       <div className="row mt-3">
@@ -28,6 +52,14 @@ export default function ProductList({ products }) {
                     height={20}
                     fontSize={12}
                   />
+                  <button
+                    className="btn btn-primary mt-3 w-100 rounded"
+                    onClick={() => {
+                      addToCart(product);
+                    }}
+                  >
+                    Add to Cart
+                  </button>
                 </div>
               </div>
             </div>
