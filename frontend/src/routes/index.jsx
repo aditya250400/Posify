@@ -6,6 +6,7 @@ import CategoriesIndex from "../views/categories.jsx";
 import ProductsIndex from "../views/products/index.jsx";
 import CustomersIndex from "../views/customers/index.jsx";
 import UsersIndex from "../views/users/index.jsx";
+import TransactionsIndex from "../views/transactions/index.jsx";
 
 export default function AppRoutes() {
   const { token } = useStore();
@@ -35,6 +36,10 @@ export default function AppRoutes() {
       <Route
         path="/users"
         element={token ? <UsersIndex /> : <Navigate to="/" replace />}
+      />
+      <Route
+        path="/transactions"
+        element={token ? <TransactionsIndex /> : <Navigate to="/" replace />}
       />
     </Routes>
   );
