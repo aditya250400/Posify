@@ -318,7 +318,7 @@ export default function Header() {
                   </Link>
                 </li>
               </ul>
-              <div className="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
+              {/* <div className="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
                 <form action="./" method="get" autoComplete="off" noValidate>
                   <div className="input-icon">
                     <span className="input-icon-addon">
@@ -347,7 +347,7 @@ export default function Header() {
                     />
                   </div>
                 </form>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
