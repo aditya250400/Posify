@@ -74,7 +74,7 @@ model Cart {
 model Transaction {
   id                  Int                 @id @default(autoincrement())
   cashier_id          Int
-  customer_id         Int
+  customer_id         Int?
   invoice             String
   cash                Float
   change              Float

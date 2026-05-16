@@ -8,7 +8,7 @@ const create = async (req, res) => {
     const cashierId = parseInt(req.userId);
     const customerId = parseInt(req.body.customer_id) || null;
     const cash = parseInt(req.body.cash);
-    // const change = parseInt(req.body.change);
+    const change = parseInt(req.body.change);
     const discount = parseInt(req.body.discount);
     const grandTotal = parseInt(req.body.grand_total);
 
@@ -42,7 +42,7 @@ const create = async (req, res) => {
         customer_id: customerId,
         invoice,
         cash,
-        change: cash - grandTotal,
+        change,
         discount,
         grand_total: grandTotal,
       },

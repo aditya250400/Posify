@@ -7,6 +7,7 @@ import ProductList from "../../components/ProductList";
 import CategoryList from "../../components/CategoryList";
 import OrderItemList from "../../components/OrderItemList";
 import moneyFormat from "../../utils/moneyFormat";
+import Payment from "./components/Payments";
 
 export default function TransactionsIndex() {
   const { loading, setLoading } = useLoading();
@@ -183,6 +184,7 @@ export default function TransactionsIndex() {
                     <h3 className="mb-0">Total ({carts.length} Items)</h3>
                   </div>
                   <hr />
+                  <Payment totalCarts={totalCarts} fetchCarts={fetchCarts} />
                 </div>
               </div>
             </div>
