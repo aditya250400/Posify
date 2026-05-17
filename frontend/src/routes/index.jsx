@@ -8,6 +8,7 @@ import CustomersIndex from "../views/customers/index.jsx";
 import UsersIndex from "../views/users/index.jsx";
 import TransactionsIndex from "../views/transactions/index.jsx";
 import Print from "../views/transactions/print/print.jsx";
+import SalesIndex from "../views/sales/index.jsx";
 
 export default function AppRoutes() {
   const { token } = useStore();
@@ -45,6 +46,10 @@ export default function AppRoutes() {
       <Route
         path="/transactions/print"
         element={token ? <Print /> : <Navigate to="/" replace />}
+      />
+      <Route
+        path="/sales"
+        element={token ? <SalesIndex /> : <Navigate to="/" replace />}
       />
     </Routes>
   );

@@ -283,10 +283,16 @@ export default function Header() {
                     <span className="nav-link-title">REPORT</span>
                   </a>
                   <div className="dropdown-menu">
-                    <Link className="dropdown-item" to="/sales">
+                    <Link
+                      className={`dropdown-item ${location.pathname === "/sales" ? "active" : ""} `}
+                      to="/sales"
+                    >
                       Sales
                     </Link>
-                    <Link className="dropdown-item" to="/profits">
+                    <Link
+                      className={`dropdown-item ${location.pathname === "/profits" ? "active" : ""} `}
+                      to="/profits"
+                    >
                       Profits
                     </Link>
                   </div>
